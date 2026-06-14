@@ -7,4 +7,4 @@ Doesn't work yet.
 
 ## Build
 
-`gcc -o /path/to/prism main.c -lncurses`
+`gcc -o /desired/output/prism main.c -lncurses`
