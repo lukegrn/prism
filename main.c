@@ -10,15 +10,21 @@ typedef struct Timer {
 } Timer;
 
 int remaining(Timer t) {
+  if (t.start == 0) {
+    return 0;
+  }
+
   time_t now = time(NULL);
   return t.start + t.len - now;
 }
+
+int is_timer_running(Timer t) { return t.start != 0; }
 
 void fill_time(int seconds, char *out) {
   int minutes = seconds / 60;
   int rest_seconds = seconds % 60;
 
-  sprintf(out, "%d:%02d", minutes, rest_seconds);
+  sprintf(out, "%02d:%02d", minutes, rest_seconds);
 }
 
 int main() {
@@ -27,10 +33,7 @@ int main() {
   cbreak();
   nodelay(stdscr, TRUE);
 
-  Timer t;
-  t.start = 1781404426; // This is a hardcoded time from when I was testing,
-                        // TODO replace with now
-  t.len = 25 * 60;
+  Timer t = {0, 0};
 
   keypad(stdscr, TRUE);
 
@@ -42,15 +45,44 @@ int main() {
   attron(COLOR_PAIR(1));
 
   while (true) {
-    clear();
+    // Clear out previous state for rerender
+    erase();
+
+    // Window dimensions
     int x, y;
     getmaxyx(stdscr, y, x);
+
+    // Print in the middle of the frame
+    int print_at_y = y * 0.5;
+    int print_at_x = x * 0.5;
+
+    // Fill timer
     char message[25];
     fill_time(remaining(t), message);
 
-    y = y * 0.5;
-    x = x * 0.5;
-    mvwprintw(stdscr, y, x - strlen(message) / 2, message);
+    // User instruction
+    char user_instruction[40];
+
+    if (!is_timer_running(t)) {
+      strcpy(user_instruction, "Press space to start");
+    } else {
+      strcpy(user_instruction, "Press space to skip to timer's end");
+    }
+
+    int keypress = getch();
+    if (keypress != ERR) { // TODO check keypress
+      if (!is_timer_running(t)) {
+        t.start = time(NULL);
+        t.len = 25 * 60;
+      } else {
+        t.start = 0;
+        t.len = 0;
+      }
+    }
+
+    mvwprintw(stdscr, print_at_y - 1, print_at_x - strlen(user_instruction) / 2,
+              user_instruction);
+    mvwprintw(stdscr, print_at_y, print_at_x - strlen(message) / 2, message);
 
     refresh();
     usleep(0.1 * 1000 * 1000);
