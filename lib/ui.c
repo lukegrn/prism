@@ -1,4 +1,4 @@
-#include "display.h"
+#include "ui.h"
 #include <ncurses.h>
 #include <string.h>
 

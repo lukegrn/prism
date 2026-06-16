@@ -11,7 +11,8 @@ int remaining(Timer *t) {
   return t->start + t->len - now;
 }
 
-int is_timer_running(Timer *t) { return (t->start + t->len) > time(NULL); }
+int is_timer_running(Timer *t) { return t->len != 0; }
+int should_timer_end(Timer *t) { return (t->start + t->len) <= time(NULL); };
 
 void strtime(int seconds, char *out) {
   int minutes = seconds / 60;

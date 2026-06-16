@@ -1,5 +1,6 @@
-#include "lib/display.h"
+#include "lib/sound.h"
 #include "lib/timer.h"
+#include "lib/ui.h"
 #include <ncurses.h>
 #include <unistd.h>
 
@@ -10,6 +11,10 @@ int main() {
 
   while (true) {
     render(&t);
+    if (is_timer_running(&t) && should_timer_end(&t)) {
+      play();
+      stop(&t);
+    }
     usleep(0.1 * 1000 * 1000);
   }
 

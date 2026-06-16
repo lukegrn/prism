@@ -11,6 +11,7 @@ typedef struct Timer {
 
 int remaining(Timer *t);
 int is_timer_running(Timer *t);
+int should_timer_end(Timer *t);
 
 void strtime(int seconds, char *out);
 

@@ -1,5 +1,5 @@
-#ifndef DISPLAY_H_
-#define DISPLAY_H_
+#ifndef UI_H_
+#define UI_H_
 
 #include "timer.h"
 
