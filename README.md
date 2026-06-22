@@ -11,7 +11,15 @@ Install `ncurses` on whatever platform.
 
 `gcc main.c lib/*.c -o /path/to/target/prism -lncurses`
 
+## Config
+
+Specify sound in ~/.config/prism/config with
+
+```
+sound_path=/path/to/sound
+```
+
 ## Todo
 
-- [ ] Remove hardcoded sounds and use user-provided ones
+- [x] Remove hardcoded sounds and use user-provided ones
 - [ ] Configure work/break focus splits other than default 25/5
